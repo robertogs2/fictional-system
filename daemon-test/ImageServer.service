@@ -1,0 +1,11 @@
+[Unit]
+Description=Image Server
+# After=network-online.target ; Use this for dependencies
+
+[Service]
+ExecStart=/usr/bin/ImageServer
+Restart=on-failure
+# ExecStop=... ; Use this to tell it what to happen when to stop
+
+[Install]
+WantedBy=multi-user.target
