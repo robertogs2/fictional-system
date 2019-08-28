@@ -66,21 +66,24 @@ static void skeleton_daemon()
     }
     
     /* Open the log file */
-    openlog ("firstdaemon", LOG_PID, LOG_DAEMON);
+    openlog ("testdaemon", LOG_PID, LOG_DAEMON);
 }
-int main()
-{
+int main(){
     skeleton_daemon();
     
     while (1)
     {
         //TODO: Insert daemon code here.
-        syslog (LOG_NOTICE, "First daemon started.");
-        sleep (20);
+        syslog (LOG_NOTICE, "Image server write.");
+        sleep (100);
+        FILE *fptr;
+        fptr = fopen("/home/roberto/Documents/test.txt","w");
+        fprintf(fptr,"%s","asd\n");
+        fclose(fptr);
         break;
     }
    
-    syslog (LOG_NOTICE, "First daemon terminated.");
+    syslog (LOG_NOTICE, "Image server terminated.");
     closelog();
     
     return EXIT_SUCCESS;

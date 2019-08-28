@@ -3,7 +3,8 @@ Description=Image Server
 # After=network-online.target ; Use this for dependencies
 
 [Service]
-ExecStart=/usr/bin/ImageServer
+Type=simple
+ExecStart=/usr/bin/ImageServer #--config /full/path/to/service.conf
 Restart=on-failure
 # ExecStop=... ; Use this to tell it what to happen when to stop
 
