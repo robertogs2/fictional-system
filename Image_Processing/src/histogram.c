@@ -9,7 +9,7 @@ int main(int argc,char **argv){
 
   MagickBooleanType status;
 
-  MagickPixelPacket pixel, c_pixel;
+  MagickPixelPacket pixel;
 
   MagickWand *yuv_wand, *image_wand;
 
@@ -21,13 +21,12 @@ int main(int argc,char **argv){
 
   unsigned long width;
 
-  double red, green, blue;
+  float red, green, blue;
 
   int histogram_data_equ[256];
   int histogram_data[256];    
   int max_intensity = 255;
   int acc_equ = 0;
-  
 
   for(int i = 0; i < 256; ++i){
     histogram_data[i] = 0;
@@ -53,9 +52,9 @@ int main(int argc,char **argv){
   int n = (int) MagickGetImageWidth(image_wand);
   int total = m * n;
 
-  int Ys[total];
-  int Us[total];
-  int Vs[total];
+  short Ys[total];
+  short Us[total];
+  short Vs[total];
   printf("HERE\n");
 
   iterator=NewPixelIterator(image_wand);

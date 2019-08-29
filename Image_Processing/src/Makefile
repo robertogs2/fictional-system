@@ -1,13 +1,20 @@
 CC = gcc -o
-EXE = histogram
+HISTOGRAM = histogram
+CLASSIFICATOR = classificator
 LIBS = converters.a
 LIB_DIR = ../lib/
 INCLUDE_DIR = ../include/
 BIN_DIR = ../bin/
 CFLAGS = `pkg-config --cflags --libs MagickWand` -lm
 
-$(EXE)_e : $(EXE).c
-		#gcc -o ../bin/calculadora_e calculadora.c ../lib/lib_math.a -I../include/
-		$(CC) $(BIN_DIR)$(EXE) $(EXE).c $(LIB_DIR)$(LIBS) -I$(INCLUDE_DIR) $(CFLAGS)
+all: $(HISTOGRAM) $(CLASSIFICATOR)
+
+$(HISTOGRAM) : $(HISTOGRAM).c
+
+		$(CC) $(BIN_DIR)$(HISTOGRAM) $(HISTOGRAM).c $(LIB_DIR)$(LIBS) -I$(INCLUDE_DIR) $(CFLAGS)
+
+$(CLASSIFICATOR) : $(CLASSIFICATOR).c
+
+		$(CC) $(BIN_DIR)$(CLASSIFICATOR) $(CLASSIFICATOR).c $(CFLAGS)
 
 
