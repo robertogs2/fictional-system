@@ -150,8 +150,9 @@ void respond(int n)
         uri    = strtok(NULL, " \t");
         prot   = strtok(NULL, " \t\r\n"); 
 
-        fprintf(stderr, "\x1b[32m + [%s] %s\x1b[0m\n", method, uri);
         
+        fprintf(stderr, "\x1b[32m + [%s] %s\x1b[0m\n", method, uri);
+        printf("%s\n", buf);
         if (qs = strchr(uri, '?'))
         {
             *qs++ = '\0'; //split URI
@@ -161,6 +162,7 @@ void respond(int n)
 
         header_t *h = reqhdr;
         char *t, *t2;
+
         while(h < reqhdr+16) {
             char *k,*v,*t;
             k = strtok(NULL, "\r\n: \t"); if (!k) break;
@@ -184,7 +186,6 @@ void respond(int n)
 
         // call router
         route();
-
         // tidy up
         fflush(stdout);
         shutdown(STDOUT_FILENO, SHUT_WR);

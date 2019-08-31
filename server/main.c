@@ -8,14 +8,17 @@
 
 #include "httpd.h"
 
+
 int main(int c, char** v)
 {
     serve_forever("12913");
     return 0;
 }
 
+
 void route()
 {
+    printf("%s\n", "as");
     ROUTE_START()
 
     ROUTE_GET("/")
