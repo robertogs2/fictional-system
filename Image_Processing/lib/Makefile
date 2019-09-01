@@ -14,5 +14,3 @@ $(LIBS) : $(OBJ)
 $(OBJ) : $(SRC)
 		$(CC) $(SRC)
 
-
-

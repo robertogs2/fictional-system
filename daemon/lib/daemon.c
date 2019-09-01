@@ -1,23 +1,5 @@
-/*
-* daemonize.c
-* This example daemonizes a process, writes a few log messages,
-* sleeps 20 seconds and terminates afterwards.
-* This is an answer to the stackoverflow question:
-* https://stackoverflow.com/questions/17954432/creating-a-daemon-in-linux/17955149#17955149
-* Fork this code: https://github.com/pasce/daemon-skeleton-linux-c
-* Read about it: https://nullraum.net/how-to-create-a-daemon-in-c/
-*/
-    
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <signal.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <syslog.h>
-   
-static void skeleton_daemon()
-{
+#include <daemon.h>
+void skeleton_daemon(){
     pid_t pid;
     
     /* Fork off the parent process */
@@ -66,25 +48,5 @@ static void skeleton_daemon()
     }
     
     /* Open the log file */
-    openlog ("testdaemon", LOG_PID, LOG_DAEMON);
-}
-int main(){
-    skeleton_daemon();
-    
-    while (1)
-    {
-        //TODO: Insert daemon code here.
-        syslog (LOG_NOTICE, "Image server write.");
-        sleep (100);
-        FILE *fptr;
-        fptr = fopen("/home/roberto/Documents/test.txt","w");
-        fprintf(fptr,"%s","asd\n");
-        fclose(fptr);
-        break;
-    }
-   
-    syslog (LOG_NOTICE, "Image server terminated.");
-    closelog();
-    
-    return EXIT_SUCCESS;
+    openlog ("ImageServer", LOG_PID, LOG_DAEMON);
 }

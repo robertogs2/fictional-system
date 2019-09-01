@@ -1,9 +1,10 @@
 SRC_DIR=src/
 BIN_DIR=bin/
+LIB_DIR=lib/
 
 SERVER=ImageServer
 SERVICE=$(SERVER).service
-DAEMON=image_server
+DAEMON=imageserver
 
 USR_BIN_PATH = /usr/bin/
 SYS_PATH = /lib/systemd/system/
@@ -17,4 +18,5 @@ all: $(DAEMON)
 	sudo $(SYSCTL) start $(SERVER)							#start the service
 
 $(DAEMON):
-	make -C $(SRC_DIR)
+	make -C $(LIB_DIR)
+	#make -C $(SRC_DIR)
