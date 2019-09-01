@@ -19,9 +19,10 @@
 
 typedef struct {
     int port;
-    char dirlog[100];
-    char dirhist[100];
-    char dirclas[100];
+    char dirlog[256];
+    char dirhist[256];
+    char dirclas[256];
+    char dirorg[256];
 } config;
 
 int iterate_post (void *coninfo_cls,
@@ -46,6 +47,7 @@ int answer_to_connection (void *cls,
                       size_t *upload_data_size,
                       void **con_cls);
 
+void completeTransfer(char* filename, config* conf);
 struct MHD_Daemon* startServer(config* conf);
 void stopDaemon(struct MHD_Daemon* daemon);
 
