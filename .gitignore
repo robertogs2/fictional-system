@@ -1,2 +1,3 @@
 Image_Processing/bin/*
 daemon/bin/*
+daemon/lib/*.a
