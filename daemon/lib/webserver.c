@@ -1,4 +1,5 @@
 #include <webserver.h>
+#include <imageprocessing.h>
 
 #ifdef _MSC_VER
 #ifndef strcasecmp
@@ -74,6 +75,7 @@ struct connection_info_struct{
 
   //This is a modified segment
   config* conf;
+  char filename[256];
 
 };
 
@@ -110,9 +112,9 @@ int iterate_post (void *coninfo_cls,
   (void)transfer_encoding;  /* Unused. Silent compiler warning. */
   (void)off;                /* Unused. Silent compiler warning. */
 
-  char buffer[256];
-  strcpy(buffer, con_info->conf->dirhist);
-  strcat(buffer, filename);
+  //Make path for original image
+  char filepath[256];
+  sprintf(filepath, "%s%s", con_info->conf->dirorg, filename);
 
   if (0 != strcmp (key, "file")){
     con_info->answerstring = servererrorpage;
@@ -120,19 +122,18 @@ int iterate_post (void *coninfo_cls,
     return MHD_YES;
   }
 
-  if (! con_info->fp){
+  if (!con_info->fp){
     if (0 != con_info->answercode) /* something went wrong */
       return MHD_YES;
-    if (NULL != (fp = fopen (buffer, "rb"))){
+    if (NULL != (fp = fopen (filepath, "rb"))){
       fclose (fp);
       con_info->answerstring = fileexistspage; //Here returns if file exists already
       con_info->answercode = MHD_HTTP_FORBIDDEN;
       return MHD_YES;
     }
-    /* NOTE: This is technically a race with the 'fopen()' above,
-    but there is no easy fix, short of moving to open(O_EXCL)
-    instead of using fopen(). For the example, we do not care. */
-    con_info->fp = fopen (buffer, "ab");
+
+    strcpy(con_info->filename, filename);
+    con_info->fp = fopen (filepath, "ab");
     if (!con_info->fp){
       con_info->answerstring = fileioerror;
       con_info->answercode = MHD_HTTP_INTERNAL_SERVER_ERROR;
@@ -140,8 +141,7 @@ int iterate_post (void *coninfo_cls,
     }
   }
 
-  if (size > 0)
-  {
+  if (size > 0){
     if (! fwrite (data, sizeof (char), size, con_info->fp))
     {
       con_info->answerstring = fileioerror;
@@ -275,6 +275,9 @@ int answer_to_connection (void *cls,
       /* No errors encountered, declare success */
       con_info->answerstring = completepage;
       con_info->answercode = MHD_HTTP_OK;
+
+      //This calls an end to the transfer
+      completeTransfer(con_info->filename, conf);
     }
     return send_page (connection,
                       con_info->answerstring,
@@ -285,6 +288,11 @@ int answer_to_connection (void *cls,
   return send_page (connection,
                     errorpage,
                     MHD_HTTP_BAD_REQUEST);
+}
+
+void completeTransfer(char* filename, config* conf){
+  classify(conf->dirorg, filename, conf->dirclas);
+  printf("Completed file: %s\n", filename);
 }
 
 //Pass the config value

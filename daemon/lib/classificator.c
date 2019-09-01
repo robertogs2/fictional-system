@@ -1,5 +1,4 @@
-#include <stdlib.h>
-#include <wand/MagickWand.h>
+#include <imageprocessing.h>
 
 int classify(const char* imagepath, const char* imagename, const char* destinypath) {
     char buffer[100];
@@ -57,7 +56,7 @@ int classify(const char* imagepath, const char* imagename, const char* destinypa
     iterator = DestroyPixelIterator(iterator);
     image_wand = DestroyMagickWand(image_wand);
 
-// Write the image then destroy it.
+    // Write the image then destroy it.
 
     status = MagickWriteImages(copy_wand, buffer, MagickTrue);
     if (status == MagickFalse)
@@ -66,10 +65,10 @@ int classify(const char* imagepath, const char* imagename, const char* destinypa
     MagickWandTerminus();
 }
 
-int main(int argc, char **argv) {
+/*int main(int argc, char **argv) {
 
     classify("../../test/", "sad.jpg", "../../test/");
 
     return (0);
-}
+}*/
 

@@ -24,7 +24,7 @@ config get_config(const char* conf_path){
     config conf;
     FILE* file = fopen(conf_path, "r"); /* should check the result */
     char line[256];
-    char prev[100];
+    char prev[256];
     while (fgets(line, sizeof(line), file)) {
         char* current = strtok (line, "=:");
         //prev={0};
@@ -44,6 +44,10 @@ config get_config(const char* conf_path){
                 strcpy(conf.dirclas, current);
                 conf.dirclas[strcspn(conf.dirclas, "\n")] = 0;
             }
+            else if(!strcmp(prev,"dirorg")){
+                strcpy(conf.dirorg, current);
+                conf.dirorg[strcspn(conf.dirorg, "\n")] = 0;
+            }
             strcpy(prev, current);
             current = strtok (NULL, "=:");
         }
@@ -53,7 +57,7 @@ config get_config(const char* conf_path){
 }   
 
 int main() {
-    char buffer[100];
+    char buffer[256];
     //skeleton_daemon();
     printf("%s\n", "Started daemon");
 
@@ -78,13 +82,16 @@ int main() {
     strcat(buffer, "green/");
     mkdir(buffer, 0777);
 
+    strcpy(buffer, conf.dirorg);
+    mkdir(buffer, 0777);
+
     //Copies data to pointer
     config* conf_ptr = malloc(sizeof(config));
     conf_ptr->port=conf.port;
     strcpy(conf_ptr->dirlog, conf.dirlog);
     strcpy(conf_ptr->dirhist, conf.dirhist);
     strcpy(conf_ptr->dirclas, conf.dirclas);
-    
+    strcpy(conf_ptr->dirorg, conf.dirorg);
     
     while (1) {
         //syslog (LOG_NOTICE, "Image server write.");
