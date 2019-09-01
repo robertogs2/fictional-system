@@ -1,2 +1,2 @@
 largepost: largepost.c
-	gcc -o largepost largepost.c -I . -lmicrohttpd
+	gcc -o server largepost.c -I . -lmicrohttpd
