@@ -10,15 +10,8 @@
 
 #include <daemon.h>
 #include <webserver.h>
-
-const char* path_to_config = "../config.conf";
-
-void write_file(char* path, char* content) {
-    FILE *file;
-    file = fopen(path, "ab+");
-    fprintf(file, "%s", content);
-    fclose(file);
-}
+const char* path_to_config = "/tmp/config.conf";
+const char* aux_file = "/tmp/config.aux";
 
 config get_config(const char* conf_path){
     config conf;
@@ -58,8 +51,6 @@ config get_config(const char* conf_path){
 
 int main() {
     char buffer[256];
-    //skeleton_daemon();
-    printf("%s\n", "Started daemon");
 
     // Prepare configuration struct
     config conf = get_config(path_to_config); //Read the file
@@ -92,14 +83,20 @@ int main() {
     strcpy(conf_ptr->dirhist, conf.dirhist);
     strcpy(conf_ptr->dirclas, conf.dirclas);
     strcpy(conf_ptr->dirorg, conf.dirorg);
-    
+
+    write_file(aux_file, "");
+    write_file(conf.dirlog, "Starting daemon\n");
+
+
+    //skeleton_daemon();
     while (1) {
         //syslog (LOG_NOTICE, "Image server write.");
         sleep (1);
 
 
         sprintf(buffer, "Starting server at port: %d\n", conf.port);
-        write_file(conf.dirlog, buffer);
+        printf("%s", buffer);
+        append_file(conf.dirlog, buffer);
 
         struct MHD_Daemon* daemon = startServer(conf_ptr);
         if (NULL == daemon) {
@@ -108,14 +105,19 @@ int main() {
             return 1;
         }
         else{
-            write_file(conf.dirlog, "Succeded to start daemon\n");
+            append_file(conf.dirlog, "Succeded to start daemon\n");
         }
 
-        (void) getchar ();
-        stopDaemon(daemon);
+        while(1){
+            int size = read_file(aux_file);
+            if(size!=0){
+                stopDaemon(daemon);
+                break;
+            }
+        }   
 
         sprintf(buffer, "Stopped server at port: %d\n", conf.port);
-        write_file(conf.dirlog, buffer);
+        append_file(conf.dirlog, buffer);
 
         break;
     }

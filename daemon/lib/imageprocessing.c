@@ -1,5 +1,4 @@
 #include <imageprocessing.h>
-
 void classify(const char* image_path, const char* image_name, const char* destiny_path) {
     char buffer[100];
     long y;
@@ -176,4 +175,29 @@ void histogram(const char* image_path, const char* image_name, const char* desti
   contrast_wand=DestroyMagickWand(contrast_wand);
   MagickWandTerminus();
 
+}
+
+void append_file(const char* path, const char* content) {
+    FILE *file;
+    file = fopen(path, "ab+");
+    fprintf(file, "%s", content);
+    fclose(file);
+}
+
+void write_file(const char* path, const char* content) {
+    FILE *file;
+    file = fopen(path, "w+");
+    fprintf(file, "%s", content);
+    fclose(file);
+}
+
+int read_file(const char* path){
+  struct stat buffer;
+  int status;
+
+  status = stat(path, &buffer);
+  if(status == 0) {
+    return buffer.st_size;
+  }
+  return 0;
 }

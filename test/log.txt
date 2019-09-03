@@ -1,36 +1,4 @@
-Succeded to start daemon
-Succeded to start daemon
-Succeded to start daemon
-Succeded to start daemon
-Succeded to start daemon
-Succeded to start daemon
-Succeded to start daemon
-Succeded to start daemon
+Starting daemon
 Starting server at port: 8877
 Succeded to start daemon
-Starting server at port: 8877
-Succeded to start daemon
-Starting server at port: 8877
-Succeded to start daemon
-Starting server at port: 8877
-Succeded to start daemon
-Starting server at port: 8877
-Succeded to start daemon
-Starting server at port: 8877
-Succeded to start daemon
-Starting server at port: 8877
-Succeded to start daemon
-Starting server at port: 8877
-Succeded to start daemon
-Starting server at port: 8877
-Succeded to start daemon
-Starting server at port: 8877
-Succeded to start daemon
-Starting server at port: 8877
-Succeded to start daemon
-Starting server at port: 8877
-Succeded to start daemon
-Starting server at port: 8877
-Succeded to start daemon
-Starting server at port: 8877
-Succeded to start daemon
+Stopped server at port: 8877

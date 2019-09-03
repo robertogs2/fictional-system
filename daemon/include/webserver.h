@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <microhttpd.h>
+#include <imageprocessing.h>
 
 typedef struct {
     int port;

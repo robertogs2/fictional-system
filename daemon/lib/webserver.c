@@ -1,6 +1,5 @@
 #include <webserver.h>
-#include <imageprocessing.h>
-
+#include <webchars.h>
 #ifdef _MSC_VER
 #ifndef strcasecmp
 #define strcasecmp(a,b) _stricmp((a),(b))
@@ -12,31 +11,24 @@
 #define snprintf _snprintf
 #endif
 
-#define PORT            1717
 #define POSTBUFFERSIZE  512
 #define MAXCLIENTS      100
 
-const char *askpage = "<html><body>\n\
-Upload a file, please!<br>\n\
-There are %u clients uploading at the moment.<br>\n\
-<form action=\"/filepost\" method=\"post\" enctype=\"multipart/form-data\">\n\
-<input name=\"file\" type=\"file\">\n\
-<input type=\"submit\" value=\" Send \"></form>\n\
-</body></html>";
-const char *busypage =
-  "<html><body>This server is busy, please try again later.</body></html>";
-const char *completepage =
-  "<html><body>The upload has been completed.</body></html>";
-const char *errorpage =
-  "<html><body>This doesn't seem to be right.</body></html>";
-const char *servererrorpage =
-  "<html><body>Invalid request.</body></html>";
-const char *fileexistspage =
-  "<html><body>This file already exists.</body></html>";
-const char *fileioerror =
-  "<html><body>IO error writing to disk.</body></html>";
-const char* const postprocerror =
-  "<html><head><title>Error</title></head><body>Error processing POST data</body></html>";
+const char *askpage = askpage_html;
+
+const char *busypage = busypage_html;
+
+const char *completepage = completepage_html;
+
+const char *errorpage = errorpage_html;
+
+const char *servererrorpage = servererrorpage_html;
+
+const char *fileexistspage = fileexistspage_html;
+
+const char *fileioerror = fileioerror_html;
+
+const char* const postprocerror = postprocerror_html;
 
 enum ConnectionType{
   GET = 0,
