@@ -1,5 +1,5 @@
 LIBNAME = libimageserver
-SRCS = webserver.c daemon.c classificator.c
+SRCS = webserver.c daemon.c imageprocessing.c
 LIB =  $(LIBNAME).a
 OBJS =  $(SRCS:.c=.o)
 AR = ar rvs

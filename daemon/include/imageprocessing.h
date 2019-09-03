@@ -7,6 +7,6 @@
 #include <wand/MagickWand.h>
 #include <converters.h>
 
-int classify(const char* imagepath, const char* imagename, const char* destinypath);
-
+void classify(const char* image_path, const char* image_name, const char* destiny_path);
+void histogram(const char* image_path, const char* image_name, const char* destiny_path);
 #endif // _IMAGEPROCESSING_H
