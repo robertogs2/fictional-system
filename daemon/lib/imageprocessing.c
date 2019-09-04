@@ -201,3 +201,14 @@ int read_file(const char* path){
   }
   return 0;
 }
+
+void getDate(char* buffer, int buffer_size){
+  time_t rawtime;
+  struct tm * timeinfo;
+
+  time (&rawtime);
+  timeinfo = localtime (&rawtime);
+
+  strftime (buffer,buffer_size,"%c",timeinfo);
+  puts (buffer);
+}

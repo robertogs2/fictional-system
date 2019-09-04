@@ -1,0 +1,1 @@
+sudo systemctl start ImageServer									#start the service

@@ -11,6 +11,6 @@
 #include <sys/stat.h>
 #include <syslog.h>
    
-void skeleton_daemon();
+void initialize_daemon();
 
 #endif // _DAEMON_H

@@ -1,0 +1,1 @@
+sudo systemctl status ImageServer				#Status of the service

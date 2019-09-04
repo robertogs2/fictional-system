@@ -4,7 +4,7 @@ Description=Image Server
 
 [Service]
 Type=forking
-ExecStart=/usr/bin/ImageServer #--config /full/path/to/service.conf
+ExecStart=/usr/bin/ImageServer
 Restart=on-failure
 # ExecStop=... ; Use this to tell it what to happen when to stop
 

@@ -1,37 +1,30 @@
 #include <daemon.h>
-void skeleton_daemon(){
+void initialize_daemon(){
     pid_t pid;
     
-    /* Fork off the parent process */
-    pid = fork();
+    syslog (LOG_NOTICE, "ImageServer is forking once");
+    pid = fork();           //Fork parent
     
-    /* An error occurred */
-    if (pid < 0)
-        exit(EXIT_FAILURE);
+    if (pid < 0){           //Error in forking
+        syslog (LOG_NOTICE, "ImageServer failed first fork");
+        exit(EXIT_FAILURE); 
+    }
     
-     /* Success: Let the parent terminate */
-    if (pid > 0)
-        exit(EXIT_SUCCESS);
+    if (pid > 0){           //Success in forking, exit the parent
+        syslog (LOG_NOTICE, "ImageServer completed first fork");
+        exit(EXIT_SUCCESS); 
+    }
     
-    /* On success: The child process becomes session leader */
-    if (setsid() < 0)
-        exit(EXIT_FAILURE);
+    if (setsid() < 0){      //Child becomes leader, otherwise ends the program
+        syslog (LOG_NOTICE, "ImageServer child couldn't be leader");
+        exit(EXIT_FAILURE); 
+    }
     
-    /* Catch, ignore and handle signals */
-    /*TODO: Implement a working signal handler */
+    
+    // Signal handling
+    syslog (LOG_NOTICE, "ImageServer handling signals");
     signal(SIGCHLD, SIG_IGN);
     signal(SIGHUP, SIG_IGN);
-    
-    /* Fork off for the second time*/
-    pid = fork();
-    
-    /* An error occurred */
-    if (pid < 0)
-        exit(EXIT_FAILURE);
-    
-    /* Success: Let the parent terminate */
-    if (pid > 0)
-        exit(EXIT_SUCCESS);
     
     /* Set new file permissions */
     umask(0);
@@ -47,6 +40,8 @@ void skeleton_daemon(){
         close (x);
     }
     
+
+    syslog (LOG_NOTICE, "ImageServer completed initializing daemon");
     /* Open the log file */
     openlog ("ImageServer", LOG_PID, LOG_DAEMON);
 }

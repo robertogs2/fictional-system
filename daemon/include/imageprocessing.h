@@ -17,4 +17,5 @@ void histogram(const char* image_path, const char* image_name, const char* desti
 void append_file(const char* path, const char* content);
 void write_file(const char* path, const char* content);
 int read_file(const char* path);
+void getDate(char* buffer, int buffer_size);
 #endif // _IMAGEPROCESSING_H
