@@ -131,6 +131,9 @@ int iterate_post (void *coninfo_cls,
       con_info->answercode = MHD_HTTP_INTERNAL_SERVER_ERROR;
       return MHD_YES;
     }
+
+
+    //New post
   }
 
   if (size > 0){
@@ -282,9 +285,19 @@ int answer_to_connection (void *cls,
                     MHD_HTTP_BAD_REQUEST);
 }
 
+void startTransfer(char* filename, config* conf){
+
+}
+
 void completeTransfer(char* filename, config* conf){
+
+  char buffer[256];
+  sprintf(buffer, "Completed transfer of file: %s\n", filename);
+  append_file(conf->dirlog, buffer);
+
+  histogram(conf->dirorg, filename, conf->dirclas);
   classify(conf->dirorg, filename, conf->dirclas);
-  printf("Completed file: %s\n", filename);
+  
 }
 
 //Pass the config value

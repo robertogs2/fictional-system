@@ -1,4 +1,5 @@
 Starting daemon
 Starting server at port: 8877
 Succeded to start daemon
-Stopped server at port: 8877
+Completed transfer of file: pout.jpg
+Completed transfer of file: red.jpeg

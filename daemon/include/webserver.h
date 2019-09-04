@@ -48,6 +48,7 @@ int answer_to_connection (void *cls,
                       size_t *upload_data_size,
                       void **con_cls);
 
+void startTransfer(char* filename, config* conf);
 void completeTransfer(char* filename, config* conf);
 struct MHD_Daemon* startServer(config* conf);
 void stopDaemon(struct MHD_Daemon* daemon);
