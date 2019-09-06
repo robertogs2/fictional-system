@@ -1,0 +1,16 @@
+{
+  "appId": "io.ionic.starter",
+  "appName": "OSApp_2",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "android": {
+    "allowMixedContent": true
+  },
+  "server" :{
+    "allowNavigation" : [
+      "*",
+      "http://*"
+    ]
+  }
+}
