@@ -1,3 +1,11 @@
+/*
+  C HTTP webServer
+
+  Based on the largepost.c example from https://www.gnu.org/software/libmicrohttpd/tutorial.html (Public domain)
+
+  Modfied to allow configuration of port number, improve management of HTML answers and removed windows support
+*/
+
 #include <webserver.h>
 #include <webchars.h>
 #ifdef _MSC_VER
@@ -11,9 +19,12 @@
 #define snprintf _snprintf
 #endif
 
+  /* --- Definition of constants --- */
+
 #define POSTBUFFERSIZE  512
 #define MAXCLIENTS      100
 
+/* Load the html webpages from webchars.h as strings.  */
 const char *askpage = askpage_html;
 
 const char *busypage = busypage_html;
@@ -37,41 +48,36 @@ enum ConnectionType{
 
 static unsigned int nr_of_uploading_clients = 0;
 
-
-/**
-* Information we keep per connection.
-*/
+/* Information we keep per connection. */
 struct connection_info_struct{
   enum ConnectionType connectiontype;
 
-  /**
-  * Handle to the POST processing state.
-  */
+/* Handle to the POST processing state. */
   struct MHD_PostProcessor *postprocessor;
 
-  /**
-  * File handle where we write uploaded data.
-  */
+/* File handle where we write uploaded data. */
   FILE *fp;
 
-  /**
-  * HTTP response body we will return, NULL if not yet known.
-  */
+/* Uninitialized answer means HTTP response body will return NULL if not yet known. */
   const char *answerstring;
 
-  /**
-  * HTTP status code we will return, 0 for undecided.
-  */
+/* HTTP status code we will return, 0 for undecided. */
   unsigned int answercode;
 
-
-  //This is a modified segment
+/* Information for configuration file */
   config* conf;
   char filename[256];
-
 };
 
+/**
+ send_page creates the formatted answer to the client's request
 
+ struct MHD_Connection connection: pointer to the struct with the info about the current connection
+ const char* page: pointer to a string with a printf-valid HTML
+ int status_code: the status of the request
+
+ return ret: the configured response from attempted connection
+*/
 int send_page (struct MHD_Connection *connection,
            const char *page,
            int status_code) {
@@ -87,7 +93,7 @@ int send_page (struct MHD_Connection *connection,
   return ret;
 }
 
-
+//
 int iterate_post (void *coninfo_cls,
               enum MHD_ValueKind kind,
               const char *key,
@@ -148,7 +154,7 @@ int iterate_post (void *coninfo_cls,
   return MHD_YES;
 }
 
-
+// Manages connections and number of clients once request is completed
 void request_completed (void *cls,
                    struct MHD_Connection *connection,
                    void **con_cls,
@@ -175,7 +181,7 @@ void request_completed (void *cls,
   *con_cls = NULL;
 }
 
-
+// Answers the client's connection request
 int answer_to_connection (void *cls,
                       struct MHD_Connection *connection,
                       const char *url,
@@ -184,7 +190,7 @@ int answer_to_connection (void *cls,
                       const char *upload_data,
                       size_t *upload_data_size,
                       void **con_cls){
-  config* conf = (config*)cls;            
+  config* conf = (config*)cls;
   (void)url;               /* Unused. Silent compiler warning. */
   (void)version;           /* Unused. Silent compiler warning. */
 
@@ -227,6 +233,7 @@ int answer_to_connection (void *cls,
     return MHD_YES;
   }
 
+/* Case block with the answer to client's requests */
   if (0 == strcasecmp (method, MHD_HTTP_METHOD_GET)){
     /* We just return the standard form for uploads on all GET requests */
     char buffer[1024];
@@ -285,6 +292,7 @@ int answer_to_connection (void *cls,
                     MHD_HTTP_BAD_REQUEST);
 }
 
+// Stores transfered file
 void completeTransfer(char* filename, config* conf){
     int buffer_size = 256;
     char dateBuffer[buffer_size];
@@ -296,7 +304,6 @@ void completeTransfer(char* filename, config* conf){
 }
 
 //Pass the config value
-
 struct MHD_Daemon* startServer(config* conf) {
   struct MHD_Daemon* daemon;
 
@@ -308,6 +315,7 @@ struct MHD_Daemon* startServer(config* conf) {
   return daemon;
 }
 
+// stop the daemon
 void stopDaemon(struct MHD_Daemon* daemon){
   MHD_stop_daemon (daemon);
 }
