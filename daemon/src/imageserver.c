@@ -20,6 +20,12 @@
 const char* path_to_config = "/etc/server/config.conf";
 const char* aux_file = "/etc/server/config.aux";
 
+/*
+get_config: Returns a configuration struct for the system
+const char* conf_path: String with path to configuration file
+*/
+
+
 config get_config(const char* conf_path){
     config conf;
     conf.port=-1;
@@ -64,6 +70,12 @@ config get_config(const char* conf_path){
     return conf;
 }   
 
+/*
+getSmallestName: Gets the smallest file name in the images folder
+config* conf: configuration struct of the system
+char* smallestFile: pointer for buffer to store the name
+*/
+
 
 int getSmallestName(config* conf, char* smallestFile){
     struct dirent *dp;
@@ -102,6 +114,11 @@ int getSmallestName(config* conf, char* smallestFile){
     }
 }
 
+/*
+removeSmallest: Removes the smallest file name in the images folder
+config* conf: configuration struct of the system
+*/
+
 void removeSmallest(config* conf){
     char file_name[512];
     char buffer[512];
@@ -111,6 +128,11 @@ void removeSmallest(config* conf){
         system(buffer);
     }
 }
+
+/*
+processImages: Processes the images given in the configuration folder
+void* args: Pointer for the casted configuration file
+*/
 
 void* processImages(void* args){
     config* conf = (config*)args;

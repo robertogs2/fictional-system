@@ -10,7 +10,11 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <syslog.h>
-   
+
+/*
+initialize_daemon: Executes the daemon initialization process
+*/
+
 void initialize_daemon();
 
 #endif // _DAEMON_H
