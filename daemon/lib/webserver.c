@@ -124,7 +124,7 @@ int iterate_post (void *coninfo_cls,
       return MHD_YES;
     }
 
-    strcpy(con_info->filename, filename);
+    strcpy(con_info->filename, filename);     //Creates the full filepath concatenating both the filename and the directory
     con_info->fp = fopen (filepath, "ab");
     if (!con_info->fp){
       con_info->answerstring = fileioerror;
