@@ -93,6 +93,7 @@ int getSmallestName(config* conf, char* smallestFile){
             if(stbuf.st_size > 0 && (stbuf.st_size < file_size || file_size == 0)){
                 file_size = stbuf.st_size;
                 sprintf(smallestFile,"%s",dp->d_name);
+                return 1;
             }
             else{
                 return 0;
@@ -105,23 +106,39 @@ void removeSmallest(config* conf){
     char file_name[512];
     char buffer[512];
     int r = getSmallestName(conf, file_name);
-    if(!r){
+    if(r){
         sprintf(buffer, "sudo rm %s%s", conf->dirorg, file_name);
         system(buffer);
     }
 }
 
 void* processImages(void* args){
-    printf("%s\n", "entering");
     config* conf = (config*)args;
+    int buffer_size=256;
+    char filename[512];
+    char dateBuffer[256];
+    char buffer[512];
     while(1){
-        char file_name[512];
-        int r = getSmallestName(conf, file_name);
-        if(!r){
-            printf("Processing %s%s\n", conf->dirorg, file_name);
+        
+        int r = getSmallestName(conf, filename);
+        if(r){
+            printf("Processing %s%s\n", conf->dirorg, filename);
+
+            getDate(dateBuffer, buffer_size);
+            sprintf(buffer, "%s: Starting algorithms for file: %s\n", dateBuffer, filename);
+            append_file(conf->dirlog, buffer);
+
+            classify(conf->dirorg, filename, conf->dirclas);
+            getDate(dateBuffer, buffer_size);
+            sprintf(buffer, "%s: Completed classify for file: %s\n", dateBuffer, filename);
+            append_file(conf->dirlog, buffer);
+
+            histogram(conf->dirorg, filename, conf->dirhist);
+            getDate(dateBuffer, buffer_size);
+            sprintf(buffer, "%s: Completed histogram for file: %s\n", dateBuffer, filename);
+            append_file(conf->dirlog, buffer);
             removeSmallest(conf);
         }
-        else break;
         sleep(1);
     }
 }
@@ -179,11 +196,11 @@ int main() {
     append_file(conf.dirlog, buffer);
     syslog (LOG_NOTICE, "ImageServer service daemon is about to start.");
 
-    /*pthread_t imageThread;
-    pthread_create(&imageThread, NULL, processImages, (void*)conf_ptr);
-    pthread_join(imageThread, NULL);*/
-
     initialize_daemon();
+
+    pthread_t imageThread;
+    pthread_create(&imageThread, NULL, processImages, (void*)conf_ptr);
+    //pthread_join(imageThread, NULL);
     while (1) {
 
         

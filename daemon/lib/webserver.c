@@ -293,16 +293,6 @@ void completeTransfer(char* filename, config* conf){
     getDate(dateBuffer, buffer_size);
     sprintf(buffer, "%s: Completed transfer of file: %s\n", dateBuffer, filename);
     append_file(conf->dirlog, buffer);
-
-    classify(conf->dirorg, filename, conf->dirclas);
-    getDate(dateBuffer, buffer_size);
-    sprintf(buffer, "%s: Completed classify for file: %s\n", dateBuffer, filename);
-    append_file(conf->dirlog, buffer);
-
-    histogram(conf->dirorg, filename, conf->dirhist);
-    getDate(dateBuffer, buffer_size);
-    sprintf(buffer, "%s: Completed histogram for file: %s\n", dateBuffer, filename);
-    append_file(conf->dirlog, buffer);
 }
 
 //Pass the config value

@@ -1,17 +1,9 @@
-Fri Sep  6 02:05:30 2019: Starting daemon
-Fri Sep  6 02:06:59 2019: Starting daemon
-Fri Sep  6 02:07:15 2019: Starting daemon
-Fri Sep  6 02:07:34 2019: Starting daemon
-Fri Sep  6 02:09:53 2019: Starting daemon
-Fri Sep  6 02:10:58 2019: Starting daemon
-Fri Sep  6 02:12:00 2019: Starting daemon
-Fri Sep  6 02:12:52 2019: Starting daemon
-Fri Sep  6 02:13:31 2019: Starting daemon
-Fri Sep  6 02:13:51 2019: Starting daemon
-Fri Sep  6 02:15:43 2019: Starting daemon
-Fri Sep  6 02:17:15 2019: Starting daemon
-Fri Sep  6 02:18:12 2019: Starting daemon
-Fri Sep  6 02:18:34 2019: Starting daemon
-Fri Sep  6 02:19:02 2019: Starting daemon
-Fri Sep  6 02:19:25 2019: Starting daemon
-Fri Sep  6 02:20:36 2019: Starting daemon
+Fri Sep  6 02:54:00 2019: Starting daemon
+Fri Sep  6 02:54:41 2019: Starting daemon
+Fri Sep  6 02:55:46 2019: Starting daemon
+Fri Sep  6 02:55:46 2019: Starting server at port: 1717
+Fri Sep  6 02:55:46 2019: Succeded to start server
+Fri Sep  6 02:55:57 2019: Completed transfer of file: 1209.png
+Fri Sep  6 02:55:58 2019: Starting algorithms for file: 1209.png
+Fri Sep  6 02:55:58 2019: Completed classify for file: 1209.png
+Fri Sep  6 02:56:01 2019: Completed histogram for file: 1209.png
