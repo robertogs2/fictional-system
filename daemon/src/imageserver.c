@@ -10,6 +10,13 @@
 
 #include <daemon.h>
 #include <webserver.h>
+#include <dirent.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <syslog.h>
+#include <signal.h>
+#include <pthread.h>
+
 const char* path_to_config = "/etc/server/config.conf";
 const char* aux_file = "/etc/server/config.aux";
 
@@ -57,8 +64,70 @@ config get_config(const char* conf_path){
     return conf;
 }   
 
+
+int getSmallestName(config* conf, char* smallestFile){
+    struct dirent *dp;
+    DIR *dfd;
+    char buffer[512];
+    if ((dfd = opendir(conf->dirorg)) == NULL){
+        sprintf(buffer, "Can't open %s\n", conf->dirorg);
+        append_file(conf->dirlog, buffer);
+        return 0;
+    }
+
+    char filename_qfd[512];
+    size_t file_size = 0;
+
+    while ((dp = readdir(dfd)) != NULL){
+        struct stat stbuf ;
+        sprintf( filename_qfd , "%s%s",conf->dirorg,dp->d_name) ;
+        if( stat(filename_qfd,&stbuf ) == -1 ){
+            sprintf(buffer, "echo Unable to stat file: %s >> /tmp/test.test", filename_qfd);
+            append_file(conf->dirlog, buffer);
+            continue ;
+        }
+        if ((stbuf.st_mode & S_IFMT) == S_IFDIR){
+            continue; // Skip directories
+        }
+        else{
+            if(stbuf.st_size > 0 && (stbuf.st_size < file_size || file_size == 0)){
+                file_size = stbuf.st_size;
+                sprintf(smallestFile,"%s",dp->d_name);
+            }
+            else{
+                return 0;
+            }
+        }
+    }
+}
+
+void removeSmallest(config* conf){
+    char file_name[512];
+    char buffer[512];
+    int r = getSmallestName(conf, file_name);
+    if(!r){
+        sprintf(buffer, "sudo rm %s%s", conf->dirorg, file_name);
+        system(buffer);
+    }
+}
+
+void* processImages(void* args){
+    printf("%s\n", "entering");
+    config* conf = (config*)args;
+    while(1){
+        char file_name[512];
+        int r = getSmallestName(conf, file_name);
+        if(!r){
+            printf("Processing %s%s\n", conf->dirorg, file_name);
+            removeSmallest(conf);
+        }
+        else break;
+        sleep(1);
+    }
+}
+
 int main() {
-    int buffer_size=256;
+    int buffer_size=512;
     char buffer[buffer_size];
     char dateBuffer[buffer_size];
 
@@ -109,6 +178,10 @@ int main() {
     sprintf(buffer, "%s: %s", dateBuffer, "Starting daemon\n");
     append_file(conf.dirlog, buffer);
     syslog (LOG_NOTICE, "ImageServer service daemon is about to start.");
+
+    /*pthread_t imageThread;
+    pthread_create(&imageThread, NULL, processImages, (void*)conf_ptr);
+    pthread_join(imageThread, NULL);*/
 
     initialize_daemon();
     while (1) {
@@ -162,5 +235,6 @@ int main() {
     syslog (LOG_NOTICE, "ImageServer service has finished.");
     closelog();
 
+    
     return EXIT_SUCCESS;
 }

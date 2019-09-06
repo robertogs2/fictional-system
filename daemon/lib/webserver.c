@@ -285,10 +285,6 @@ int answer_to_connection (void *cls,
                     MHD_HTTP_BAD_REQUEST);
 }
 
-void startTransfer(char* filename, config* conf){
-
-}
-
 void completeTransfer(char* filename, config* conf){
     int buffer_size = 256;
     char dateBuffer[buffer_size];
