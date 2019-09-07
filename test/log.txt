@@ -7,3 +7,9 @@ Fri Sep  6 02:55:57 2019: Completed transfer of file: 1209.png
 Fri Sep  6 02:55:58 2019: Starting algorithms for file: 1209.png
 Fri Sep  6 02:55:58 2019: Completed classify for file: 1209.png
 Fri Sep  6 02:56:01 2019: Completed histogram for file: 1209.png
+Fri Sep  6 17:13:36 2019: Starting daemon
+Fri Sep  6 17:13:36 2019: Starting server at port: 1717
+Fri Sep  6 17:13:36 2019: Succeded to start server
+Fri Sep  6 18:36:46 2019: Starting daemon
+Fri Sep  6 18:36:46 2019: Starting server at port: 1717
+Fri Sep  6 18:36:46 2019: Succeded to start server
